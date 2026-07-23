@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-body text-graphite antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-display;
+  }
+}
+
+.bg-graph-subtle {
+  background-image: linear-gradient(rgba(200, 196, 185, 0.3) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(200, 196, 185, 0.3) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+
+@layer components {
+  /* Signature element: task cards look like punch cards pulled from a
+     ledger drawer — a dashed perforation line + a notch cut into the
+     top edge, evoking a ticket stub / index card. */
+  .stub-card {
+    @apply relative bg-paper border border-line rounded-card shadow-card;
+  }
+  .stub-card::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: theme("colors.bone");
+    border: 1px solid theme("colors.line");
+    border-radius: 999px;
+    transform: translateY(-50%);
+  }
+  .stub-perforation {
+    background-image: repeating-linear-gradient(
+      90deg,
+      theme("colors.line") 0,
+      theme("colors.line") 4px,
+      transparent 4px,
+      transparent 9px
+    );
+    height: 1px;
+  }
+
+  .field-input {
+    @apply w-full rounded-md border border-line bg-paper px-3 py-2 text-sm
+    placeholder:text-graphite/40 focus:outline-none focus:ring-2 focus:ring-moss/40 focus:border-moss;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-moss px-4 py-2
+    text-sm font-medium text-paper transition hover:bg-moss-dark focus:outline-none
+    focus:ring-2 focus:ring-moss/40 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-line bg-paper px-4 py-2
+    text-sm font-medium text-graphite transition hover:bg-bone focus:outline-none
+    focus:ring-2 focus:ring-moss/30;
+  }
+
+  .tag-eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-widest text-graphite/50;
+  }
+}
