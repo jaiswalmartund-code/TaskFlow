@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function TaskModal({ task, members, onClose, onSave, onDelete, saving, readOnly = false }) {
+export default function TaskModal({ task, members, onClose, onSave, onDelete, saving, error = "", readOnly = false }) {
   const [title, setTitle] = useState(task?.title || "");
   const [description, setDescription] = useState(task?.description || "");
   const [status, setStatus] = useState(task?.status || "todo");
@@ -48,6 +48,7 @@ export default function TaskModal({ task, members, onClose, onSave, onDelete, sa
         </div>
 
         <input
+          required={!readOnly}
           disabled={readOnly}
           className="mt-2 w-full border-none bg-transparent font-display text-xl font-semibold text-graphite outline-none placeholder:text-graphite/30 disabled:opacity-80"
           value={title}
@@ -111,6 +112,8 @@ export default function TaskModal({ task, members, onClose, onSave, onDelete, sa
 
 
         <div className="stub-perforation my-5" />
+
+        {error && <p className="mb-4 text-xs font-medium text-coral">{error}</p>}
 
         <div className="flex justify-end gap-2">
           <button type="button" className="btn-secondary" onClick={onClose}>

@@ -24,6 +24,7 @@ export default function ProjectDetail() {
   const [creatingTask, setCreatingTask] = useState(false);
   const [editingProject, setEditingProject] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [taskError, setTaskError] = useState("");
 
   const { data, isLoading } = useQuery({
     queryKey: ["project", id],
@@ -47,6 +48,10 @@ export default function ProjectDetail() {
     onSuccess: () => {
       invalidate();
       setCreatingTask(false);
+      setTaskError("");
+    },
+    onError: (error) => {
+      setTaskError(error?.response?.data?.message || "Could not create the task. Please try again.");
     },
   });
 
@@ -55,6 +60,10 @@ export default function ProjectDetail() {
     onSuccess: () => {
       invalidate();
       setActiveTask(null);
+      setTaskError("");
+    },
+    onError: (error) => {
+      setTaskError(error?.response?.data?.message || "Could not save the task. Please try again.");
     },
   });
 
@@ -218,7 +227,10 @@ export default function ProjectDetail() {
               {isManager && (
                 <button
                   className="rounded-xl bg-[#1B1F23] px-4 py-2 text-xs font-medium text-white hover:bg-black transition shadow-sm"
-                  onClick={() => setCreatingTask(true)}
+                  onClick={() => {
+                    setTaskError("");
+                    setCreatingTask(true);
+                  }}
                 >
                   + New task
                 </button>
@@ -265,6 +277,7 @@ export default function ProjectDetail() {
           onClose={() => {
             setActiveTask(null);
             setCreatingTask(false);
+            setTaskError("");
           }}
           onSave={(payload) => {
             if (activeTask) {
@@ -274,6 +287,7 @@ export default function ProjectDetail() {
             }
           }}
           onDelete={(taskId) => deleteTaskMutation.mutate(taskId)}
+          error={taskError}
         />
       )}
 
