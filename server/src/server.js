@@ -28,7 +28,8 @@ app.use(
       if (
         process.env.NODE_ENV !== "production" ||
         allowedOrigins.includes(origin) ||
-        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) ||
+        /\.(onrender\.com|vercel\.app|netlify\.app)$/.test(origin)
       ) {
         return callback(null, true);
       }
@@ -38,6 +39,14 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "TaskFlow API is running",
+    status: "ok",
+    health: "/api/health",
+  });
+});
 
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 
